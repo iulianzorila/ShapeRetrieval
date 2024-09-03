@@ -81,3 +81,6 @@ def main():
                 torch.nn.TripletMarginLoss(margin=0.30),
                 train_loader,
                 test_loader)
+    
+if __name__ == '__main__':
+    main()
