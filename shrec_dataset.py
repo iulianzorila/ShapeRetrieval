@@ -18,8 +18,11 @@ class ShrecDataset(Dataset):
     def __init__(self, root, split='train', filename_prefix=''):
         self.root = root
 
-        if len(os.listdir(root)) == 0:
+        if osp.exists(root + "/pointcloud"):
+            print(f"Data was not found in {root + '/pointcloud'}\n")
             self.download_data()
+            
+        self.root += "/pointcloud"
 
         # List of (file path, category)
         self.samples = [(line.rstrip(), line.split('/')[0])
@@ -37,7 +40,7 @@ class ShrecDataset(Dataset):
     def download_data(self):
         """Download pointcloud SHREC data and unzip to data/pointcloud """
         print("Downloading pointcloud data to data/pointcloud ...")
-        url = "https://drive.google.com/uc?id=1MddcGTmTW0HY3C0A5uYMfMTk6Ka-Hh2a"
+        url = "https://drive.google.com/uc?id=1oyK3OwVhYMW29ht7hSCN3HUB6QNLOKyU"
         gdown.download(url, self.root + "pointcloud.zip")
         
         with zipfile.ZipFile(self.root + "pointcloud.zip", 'r') as zip_ref:

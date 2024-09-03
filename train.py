@@ -73,14 +73,15 @@ def main():
 
     training_loop(IOStream(osp.join(logdir,'run.log')),
                 savedir,
-                args.epochs,
+                args.epoch,
                 optimizer,
                 scheduler_warmup,
                 5,
                 embedder,
                 torch.nn.TripletMarginLoss(margin=0.30),
                 train_loader,
-                test_loader)
+                test_loader, 
+                device)
     
 if __name__ == '__main__':
     main()
