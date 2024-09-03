@@ -60,7 +60,7 @@ def main():
     optimizer = torch.optim.AdamW(optimizer_grouped_parameters, lr=args.lr)
 
     # Use cosine annealing learning rate scheduler with warmup
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, args.epochs, eta_min=args.lr/100.0)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, args.epoch, eta_min=args.lr/100.0)
     scheduler_warmup = GradualWarmupScheduler(optimizer, multiplier=1, total_epoch=10, after_scheduler=scheduler)
 
     if not osp.exists(args.exp_dir): os.makedirs(args.exp_dir)
