@@ -5,6 +5,7 @@ import open3d as o3d
 import random
 import gdown
 import os
+import zipfile
 
 def pc_normalize(pc):
     centroid = np.mean(pc, axis=0)
@@ -37,7 +38,11 @@ class ShrecDataset(Dataset):
         """Download pointcloud SHREC data and unzip to data/pointcloud """
         print("Downloading pointcloud data to data/pointcloud ...")
         url = "https://drive.google.com/uc?id=1MddcGTmTW0HY3C0A5uYMfMTk6Ka-Hh2a"
-        gdown.download(url)
+        gdown.download(url, self.root + "pointcloud.zip")
+        
+        with zipfile.ZipFile(self.root + "pointcloud.zip", 'r') as zip_ref:
+            zip_ref.extractall(self.root)
+
         print("Done!")
 
     def __len__(self):

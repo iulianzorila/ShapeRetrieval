@@ -1,6 +1,6 @@
 import torch
 from torch.nn import functional as F
-from point_tnt.model import PointTNT
+from .point_tnt.model import PointTNT
 
 def set_requires_grad_for_layer(layer: torch.nn.Module, train: bool) -> None:
     """Sets the attribute requires_grad to True or False for each parameter.
