@@ -82,7 +82,7 @@ def main():
     args = parse_args()
     model_weights = "best_model.pth" # @param ["best_model.pth", "model.pth"]
 
-    model_path = f'{args.exp_name}/weights/{model_weights}'
+    model_path = f'{args.exp_dir}/weights/{model_weights}'
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     embedder = Embedder(size_embedding=args.embeddings_dim, 
@@ -91,9 +91,8 @@ def main():
     
     embedder.to(device)
 
-    #checkpoint = torch.load(model_path, map_location=torch.device('cpu'))
     print("\n Loading embedder weights \n")
-    checkpoint = torch.load(model_path)
+    checkpoint = checkpoint = torch.load(model_path) if device == "cuda" else torch.load(model_path, map_location=torch.device('cpu'))
     embedder.load_state_dict(checkpoint['model_state_dict'])
 
     test_dataset = ShrecDataset(args.data_root, 'test')
@@ -110,9 +109,9 @@ def main():
 
     embedder = embedder.eval()
 
-    if osp.exists(osp.join(args.exp_name, "gallery_shrec.txt")):
-        recalls_with_triplet, gallery_shrec = save_load_results(args.exp_name, save=False)
-        print(f"\nLoaded gallery from {osp.join(args.exp_name, 'gallery_shrec.txt')} \n")
+    if osp.exists(osp.join(args.exp_dir, "gallery_shrec.txt")):
+        recalls_with_triplet, gallery_shrec = save_load_results(args.exp_dir, save=False)
+        print(f"\nLoaded gallery from {osp.join(args.exp_dir, 'gallery_shrec.txt')} \n")
     else:
         gallery_shrec = build_gallery(embedder, test_gallery_loader, device)
         print(f'The SHREC gallery has: {len(gallery_shrec)} samples')
