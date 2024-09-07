@@ -17,11 +17,10 @@ def pc_normalize(pc):
 class ShrecDataset(Dataset):
     def __init__(self, root, split='train', filename_prefix=''):
         self.root = root
+        self.split = split
 
-        # There are just train.txt and test.txt and no pointcloud data
-        if len(os.listdir(root + "/pointcloud")) < 3: 
-            print(f"Data was not found in {root + '/pointcloud'}\n")
-            self.download_data()
+        # Check if data needs to be downloaded
+        self.check_data()
 
         self.root += "/pointcloud"
 
@@ -38,14 +37,25 @@ class ShrecDataset(Dataset):
         assert (split == 'train' or split == 'test')
         print('The size of %s data is %d' % (split, len(self.samples)))
 
-    def download_data(self):
-        """Download pointcloud SHREC data and unzip to data/pointcloud """
-        print("Downloading pointcloud data to data/pointcloud ...")
-        url = "https://drive.google.com/uc?id=1oyK3OwVhYMW29ht7hSCN3HUB6QNLOKyU"
-        gdown.download(url, self.root + "pointcloud.zip")
+    def check_data(self):
+        """Download pointcloud SHREC pointcloud data if training, otherwise just mesh data """
+        if len(os.listdir(self.root + "/pointcloud")) < 3 and self.split == "train": 
+            print(f"Downloading pointcloud data to {self.root}/pointcloud ...")
+            url = "https://drive.google.com/uc?id=1oyK3OwVhYMW29ht7hSCN3HUB6QNLOKyU"
+            
+            gdown.download(url, self.root + "pointcloud.zip")
+
+            with zipfile.ZipFile(self.root + "pointcloud.zip", 'r') as zip_ref:
+                zip_ref.extractall(self.root)
         
-        with zipfile.ZipFile(self.root + "pointcloud.zip", 'r') as zip_ref:
-            zip_ref.extractall(self.root)
+        if not osp.exists(self.root + "/mesh") and self.split == "test":
+            print(f"Downloading mesh data to {self.root}/mesh ...")
+            url = "https://drive.google.com/uc?id=19mKx_6Y85qH6-8whMZBtvYU8Y3NauP5l"
+            
+            gdown.download(url, self.root + "mesh.zip")
+
+            with zipfile.ZipFile(self.root + "mesh.zip", 'r') as zip_ref:
+                zip_ref.extractall(self.root)
 
         print("Done!")
 

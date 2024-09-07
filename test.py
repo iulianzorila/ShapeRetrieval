@@ -121,7 +121,8 @@ def main():
                 gallery_shrec,
                 embedder,
                 args.category,
-                args.num_neighbors)
+                args.num_neighbors, 
+                device)
     
 if __name__ == '__main__':
     main()

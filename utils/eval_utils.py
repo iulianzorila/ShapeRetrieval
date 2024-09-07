@@ -93,6 +93,7 @@ def show_neighbors(query_idx,
                    distances: np.ndarray,
                    dataset: Dataset,
                    threshold: float,
+                   data_root: str,
                    class_query: str = None) -> None:
     """Shows the query image together with the found nearest neighbors.
 
@@ -102,13 +103,14 @@ def show_neighbors(query_idx,
         distances: the distances of nearest neighbors.
         dataset: the dataset on which the gallery was built.
         threshold: the matching threshold
+        data_root: directory where the mesh data is located
         class_query: the name of the class of the query image.
 
     Returns:
     """
-    mesh_dir = 'data/mesh'
+    mesh_dir = f'{data_root}/mesh'
     translation = (1,0,0)
-
+    
     class_query_title = class_query if class_query else ''
 
     # Read corresponding mesh format and translate
