@@ -35,7 +35,7 @@ def train(writer: IOStream,
     num_batches = len(train_loader)
 
     model.train()
-    for idx_batch, (triplet, labels) in tqdm(enumerate(train_loader)):
+    for idx_batch, (triplet, labels) in enumerate(tqdm(train_loader, "Training")):
 
         anchors, positives, negatives = data_aug(triplet[0],triplet[1],triplet[2])
 
@@ -86,7 +86,7 @@ def validate(model: torch.nn.Module,
 
     model = model.eval()
     with torch.no_grad():
-        for idx_batch, (triplet, labels) in tqdm(enumerate(data_loader)):
+        for idx_batch, (triplet, labels) in enumerate(tqdm(data_loader,"Validating")):
             anchors = torch.Tensor(triplet[0]).transpose(2, 1)
             positives = torch.Tensor(triplet[1]).transpose(2, 1)
             negatives = torch.Tensor(triplet[2]).transpose(2, 1)
@@ -171,10 +171,10 @@ def training_loop(writer:IOStream,
           torch.save(state, osp.join(savedir,'best_model.pth'))
 
         if verbose:
-            print(f'Epoch: {epoch} '
+            print(f'\nEpoch: {epoch} '
                   f' Lr: {lr:.8f} '
                   f' Loss: Train = [{loss_train:.4f}] - Val = [{loss_val:.4f}] - Best Val = [{best_loss_val:.4f}]'
-                  f' Time one epoch (s): {(time_end - time_start):.4f} ')
+                  f' Time one epoch (s): {(time_end - time_start):.4f} \n')
 
         # Log results
         writer.log_training([epoch, lr, loss_train, loss_val, best_loss_val])
