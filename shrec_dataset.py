@@ -18,7 +18,8 @@ class ShrecDataset(Dataset):
     def __init__(self, root, split='train', filename_prefix=''):
         self.root = root
 
-        if not osp.exists(root + "/pointcloud"):
+        # There are just train.txt and test.txt and no pointcloud data
+        if len(os.listdir(root + "/pointcloud")) < 3: 
             print(f"Data was not found in {root + '/pointcloud'}\n")
             self.download_data()
 
