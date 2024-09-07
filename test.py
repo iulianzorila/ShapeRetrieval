@@ -116,10 +116,13 @@ def main():
     else:
         gallery_shrec = build_gallery(embedder, test_gallery_loader, device)
         print(f'The SHREC gallery has: {len(gallery_shrec)} samples')
-    
+
     query_model(test_dataset,
                 df_test,
                 gallery_shrec,
                 embedder,
                 args.category,
                 args.num_neighbors)
+    
+if __name__ == '__main__':
+    main()
