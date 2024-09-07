@@ -39,7 +39,7 @@ class ShrecDataset(Dataset):
 
     def check_data(self):
         """Download pointcloud SHREC pointcloud data if training, otherwise just mesh data """
-        if len(os.listdir(self.root + "/pointcloud")) < 3 and self.split == "train": 
+        if len(os.listdir(self.root + "/pointcloud")) < 3: 
             print(f"Downloading pointcloud data to {self.root}/pointcloud ...")
             url = "https://drive.google.com/uc?id=1oyK3OwVhYMW29ht7hSCN3HUB6QNLOKyU"
             
@@ -48,7 +48,7 @@ class ShrecDataset(Dataset):
             with zipfile.ZipFile(self.root + "pointcloud.zip", 'r') as zip_ref:
                 zip_ref.extractall(self.root)
         
-        if not osp.exists(self.root + "/mesh") and self.split == "test":
+        if not osp.exists(self.root + "/mesh"):
             print(f"Downloading mesh data to {self.root}/mesh ...")
             url = "https://drive.google.com/uc?id=19mKx_6Y85qH6-8whMZBtvYU8Y3NauP5l"
             

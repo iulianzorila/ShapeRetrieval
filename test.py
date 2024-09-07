@@ -23,7 +23,9 @@ def fix_random(seed: int) -> None:
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
 
-def query_model(test_dataset:Dataset, df_test:pd.DataFrame, gallery_shrec:np.array, model:torch.nn.Module, category:str, k:int, device:str):
+def query_model(test_dataset:Dataset, df_test:pd.DataFrame, 
+                gallery_shrec:np.array, model:torch.nn.Module, 
+                category:str, k:int, device:str, data_root:str):
   '''
   Queries the model, by showing the most k similar objects to the given one
 
@@ -35,6 +37,7 @@ def query_model(test_dataset:Dataset, df_test:pd.DataFrame, gallery_shrec:np.arr
       category: category from which the query will be taken
       k: number of output neighbors to the given query
       device: CUDA or cpu, on which the query will be evaluated
+      data_root: path where mesh and pointcloud data is located
   '''
   fix_random(42)
   index = df_test.groupby('category').get_group(category).index[0]
@@ -58,6 +61,7 @@ def query_model(test_dataset:Dataset, df_test:pd.DataFrame, gallery_shrec:np.arr
                 nn_distances,
                 test_dataset,
                 0.85,
+                data_root,
                 classes_map[label_query])
   
 
@@ -122,7 +126,8 @@ def main():
                 embedder,
                 args.category,
                 args.num_neighbors, 
-                device)
+                device,
+                args.data_root)
     
 if __name__ == '__main__':
     main()
