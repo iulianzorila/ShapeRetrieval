@@ -76,6 +76,52 @@ def nearest_neighbor(sources: np.ndarray,
 
     return distances[indices != source_idx], indices[indices != source_idx]
 
+def draw_geometries(geometries,title=''):
+    graph_objects = []
+
+    for geometry in geometries:
+        geometry_type = geometry.get_geometry_type()
+
+        if geometry_type == o3d.geometry.Geometry.Type.PointCloud:
+            points = np.asarray(geometry.points)
+            colors = None
+            if geometry.has_colors():
+                colors = np.asarray(geometry.colors)
+            elif geometry.has_normals():
+                colors = (0.5, 0.5, 0.5) + np.asarray(geometry.normals) * 0.5
+            else:
+                geometry.paint_uniform_color((1.0, 0.0, 0.0))
+                colors = np.asarray(geometry.colors)
+
+            scatter_3d = go.Scatter3d(x=points[:,0], y=points[:,1], z=points[:,2], mode='markers', marker=dict(size=1, color=colors))
+            graph_objects.append(scatter_3d)
+
+        if geometry_type == o3d.geometry.Geometry.Type.TriangleMesh:
+            triangles = np.asarray(geometry.triangles)
+            vertices = np.asarray(geometry.vertices)
+            colors = None
+            if geometry.has_triangle_normals():
+                colors = (0.5, 0.5, 0.5) + np.asarray(geometry.triangle_normals) * 0.5
+                colors = tuple(map(tuple, colors))
+            else:
+                colors = (1.0, 0.0, 0.0)
+
+            mesh_3d = go.Mesh3d(x=vertices[:,0], y=vertices[:,1], z=vertices[:,2], i=triangles[:,0], j=triangles[:,1], k=triangles[:,2], facecolor=colors, opacity=0.50)
+            graph_objects.append(mesh_3d)
+
+    fig = go.Figure(
+        data=graph_objects,
+        layout=dict(
+            title=dict(text=title),
+            scene=dict(
+                xaxis=dict(visible=False),
+                yaxis=dict(visible=False),
+                zaxis=dict(visible=False)
+            )
+        )
+    )
+    fig.show()
+
 def read_mesh(path:str) -> o3d.geometry.TriangleMesh:
   '''Reads triangle mesh and computes its vertex normals.
 
@@ -108,6 +154,7 @@ def show_neighbors(query_idx,
 
     Returns:
     """
+    o3d.visualization.draw_geometries = draw_geometries # replace function
     mesh_dir = f'{data_root}/mesh'
     translation = (1,0,0)
     

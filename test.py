@@ -84,7 +84,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    model_weights = "best_model.pth" # @param ["best_model.pth", "model.pth"]
+    model_weights = "best_model.pth"
 
     model_path = f'{args.exp_dir}/weights/{model_weights}'
 
