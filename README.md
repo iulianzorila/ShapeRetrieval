@@ -31,7 +31,7 @@ python test.py --data_root data --exp_dir point_tnt_exp --category chair
 The **SHREC14 dataset** has been converted from a mesh representation to a point cloud representation of 1024 points per sample. The network has then been trained on point-based data with contrastive loss for **100 epochs**.
 
 
-Afterwards, all the point-based data has been encoded to vectors of dimension 512, building the so called **Gallery**. Which is then used for K-Nearest Neighbor search to find the K closest elements to the input query.
+Afterwards, all the point-based data has been encoded to vectors of dimension 512, building the so called **Gallery**. Which is then used for **K-Nearest Neighbor** search to find the K closest elements to the input query.
 
 ## Dataset
 Model has been trained on the top 52 categories, containing at least 42 samples:
