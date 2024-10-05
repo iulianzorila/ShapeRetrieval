@@ -2,6 +2,7 @@ import torch
 import numpy as np
 from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors, KDTree
