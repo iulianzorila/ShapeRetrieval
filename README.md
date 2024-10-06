@@ -77,6 +77,15 @@ If you find this work useful, please consider citing it and other works:
 }
 ```
 
+```
+@inproceedings{inproceedings,
+author = {Li, Bo and Lu, Y and Li, Chen-Feng and Godil, Afzal and Schreck, Tobias and Aono, Masaki and Burtscher, Martin and Fu, Hongbo and Furuya, Takahiko and Johan, H and Liu, J and Ohbuchi, Ryutarou and Tatsuma, A and Zou, Changqing},
+year = {2014},
+title = {SHREC'14 Track: Extended Large Scale Sketch-Based 3D Shape Retrieval},
+doi = {10.2312/3dor.20141058}
+}
+```
+
 
 
 
